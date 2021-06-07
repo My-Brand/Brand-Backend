@@ -1,0 +1,17 @@
+FROM node:14-slim
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./
+
+RUN yarn global add @nestjs/cli@7.6.0
+
+RUN yarn install
+
+COPY . .
+
+ENV NODE_ENV=production
+
+RUN cd app/ && yarn build
+
+CMD node dist/src/main
