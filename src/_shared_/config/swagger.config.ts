@@ -14,8 +14,6 @@ const config = new DocumentBuilder()
   .setTitle('Issa portfolio api')
   .setDescription('The Issa portfolio api documentation')
   .setVersion('1.0.0')
-  .addTag('App', 'App welcome endpoint')
-  .addTag('Auth')
   .build();
 
 const customOptions: SwaggerCustomOptions = {

@@ -7,9 +7,10 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ExceptionsFilter } from './_shared_/filters/exceptions.filter';
 import { ResponseInterceptor } from './_shared_/interceptors/response.interceptor';
 import { LoggerInterceptor } from './_shared_/interceptors/logger.interceptor';
+import { SkillModule } from './skill/skill.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormconfig)],
+  imports: [TypeOrmModule.forRoot(ormconfig), SkillModule],
   controllers: [AppController],
   providers: [
     Logger,
