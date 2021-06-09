@@ -8,9 +8,10 @@ import { ExceptionsFilter } from './_shared_/filters/exceptions.filter';
 import { ResponseInterceptor } from './_shared_/interceptors/response.interceptor';
 import { LoggerInterceptor } from './_shared_/interceptors/logger.interceptor';
 import { SkillModule } from './skill/skill.module';
+import { CompanyModule } from './company/company.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormconfig), SkillModule],
+  imports: [TypeOrmModule.forRoot(ormconfig), SkillModule, CompanyModule],
   controllers: [AppController],
   providers: [
     Logger,
