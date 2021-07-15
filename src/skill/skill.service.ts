@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { UpdateSkillDto, CreateSkillDto, CreateSkillCategoryDto } from './dto';
 import { Skill, SkillCategory } from './entities';
+import { PaginatedData } from '../_shared_/interfaces/paginated-data';
 @Injectable()
 export class SkillService {
   constructor(
@@ -18,11 +20,19 @@ export class SkillService {
     return await this.skillRepo.save(newSkill);
   }
 
-  async findAll(category?: string): Promise<Skill[]> {
-    let skills: Skill[];
-    if (!category) skills = await this.skillRepo.find();
-    else skills = await this.skillRepo.find({ where: { category } });
-    return skills;
+  async findAll(
+    options: IPaginationOptions<any>,
+    categoryId?: string,
+  ): Promise<PaginatedData<Skill>> {
+    let result: PaginatedData<Skill>;
+    if (!categoryId) result = await paginate<Skill>(this.skillRepo, options);
+    else {
+      const category = await this.findSkillCategory(categoryId);
+      result = await paginate<Skill>(this.skillRepo, options, {
+        where: { category },
+      });
+    }
+    return result;
   }
 
   async searchSkills(keyword: string): Promise<Skill[]> {
@@ -71,8 +81,10 @@ export class SkillService {
     await this.categoryRepo.delete(id);
     return;
   }
-  async findAllCategories(): Promise<SkillCategory[]> {
-    return await this.categoryRepo.find();
+  async findAllCategories(
+    options: IPaginationOptions<any>,
+  ): Promise<PaginatedData<SkillCategory>> {
+    return await paginate<SkillCategory>(this.categoryRepo, options);
   }
   async createCategory(
     createSkillCategoryDto: CreateSkillCategoryDto,

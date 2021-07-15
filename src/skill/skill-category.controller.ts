@@ -9,7 +9,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
-import { GenericResponse } from '../_shared_/interfaces';
+import {
+  GenericPaginatedResponse,
+  GenericResponse,
+} from '../_shared_/interfaces';
+import { PaginatedData } from '../_shared_/interfaces/paginated-data';
 import { CreateSkillCategoryDto } from './dto/create-skill-category.dto';
 import { SkillCategory } from './entities/skill-category.entity';
 import { SkillService } from './skill.service';
@@ -30,8 +34,16 @@ export class SkillCategoryController {
   }
 
   @Get()
-  async findAll(): Promise<GenericResponse<SkillCategory[]>> {
-    const data = await this.skillService.findAllCategories();
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  async findAll(
+    @Query('page') page?: string,
+    @Query('limit') limit?: number,
+  ): Promise<GenericPaginatedResponse<SkillCategory>> {
+    const data = await this.skillService.findAllCategories({
+      limit: limit || 6,
+      page: page || 1,
+    });
     return {
       message: 'Skill categories retrieved',
       data,

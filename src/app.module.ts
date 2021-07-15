@@ -11,6 +11,7 @@ import { SkillModule } from './skill/skill.module';
 import { CompanyModule } from './company/company.module';
 import { ProjectModule } from './project/project.module';
 import { TutorialModule } from './tutorial/tutorial.module';
+import { InterestModule } from './interest/interest.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TutorialModule } from './tutorial/tutorial.module';
     CompanyModule,
     ProjectModule,
     TutorialModule,
+    InterestModule,
   ],
   controllers: [AppController],
   providers: [

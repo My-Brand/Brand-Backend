@@ -14,7 +14,11 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
-import { GenericResponse } from '../_shared_/interfaces';
+import {
+  GenericPaginatedResponse,
+  GenericResponse,
+} from '../_shared_/interfaces';
+import { PaginatedData } from '../_shared_/interfaces/paginated-data';
 
 @Controller('v1/projects')
 @ApiTags('Projects')
@@ -34,10 +38,20 @@ export class ProjectController {
 
   @Get()
   @ApiQuery({ name: 'company_id', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
   async findAll(
     @Query('company_id') companyId?: string,
-  ): Promise<GenericResponse<Project[]>> {
-    const data = await this.projectService.findAll(companyId);
+    @Query('page') page?: string,
+    @Query('limit') limit?: number,
+  ): Promise<GenericPaginatedResponse<Project>> {
+    const data = await this.projectService.findAll(
+      {
+        limit: limit || 6,
+        page: page || 1,
+      },
+      companyId,
+    );
     return {
       message: 'Projects retrieved',
       data,

@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { Company } from '../company/entities/company.entity';
+import { PaginatedData } from '../_shared_/interfaces/paginated-data';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
@@ -25,12 +27,19 @@ export class ProjectService {
     return await this.projectRepo.save(newProject);
   }
 
-  async findAll(companyId?: string): Promise<Project[]> {
-    const company = await this.findCompany(companyId);
-    let projects: Project[];
-    if (!companyId) projects = await this.projectRepo.find();
-    else projects = await this.projectRepo.find({ where: { company } });
-    return projects;
+  async findAll(
+    options: IPaginationOptions<any>,
+    companyId?: string,
+  ): Promise<PaginatedData<Project>> {
+    let result: PaginatedData<Project>;
+    if (!companyId) result = await paginate<Project>(this.projectRepo, options);
+    else {
+      const company = await this.findCompany(companyId);
+      result = await paginate<Project>(this.projectRepo, options, {
+        where: { company },
+      });
+    }
+    return result;
   }
   async findOne(id: string): Promise<Project> {
     const project = await this.projectRepo.findOne(id);

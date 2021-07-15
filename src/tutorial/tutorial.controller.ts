@@ -13,8 +13,12 @@ import { TutorialService } from './tutorial.service';
 import { CreateTutorialDto } from './dto/create-tutorial.dto';
 import { UpdateTutorialDto } from './dto/update-tutorial.dto';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
-import { GenericResponse } from '../_shared_/interfaces';
+import {
+  GenericPaginatedResponse,
+  GenericResponse,
+} from '../_shared_/interfaces';
 import { Tutorial } from './entities';
+import { PaginatedData } from '../_shared_/interfaces/paginated-data';
 
 @Controller('v1/tutorials')
 @ApiTags('Tutorials')
@@ -34,10 +38,20 @@ export class TutorialController {
 
   @Get()
   @ApiQuery({ name: 'category_id', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
   async findAll(
     @Query('category_id') categoryId?: string,
-  ): Promise<GenericResponse<Tutorial[]>> {
-    const data = await this.tutorialService.findAll(categoryId);
+    @Query('page') page?: string,
+    @Query('limit') limit?: number,
+  ): Promise<GenericPaginatedResponse<Tutorial>> {
+    const data = await this.tutorialService.findAll(
+      {
+        limit: limit || 6,
+        page: page || 1,
+      },
+      categoryId,
+    );
     return {
       message: 'Tutorials retrieved',
       data,
