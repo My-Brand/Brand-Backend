@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
+import { PaginatedData } from '../_shared_/interfaces/paginated-data';
 import { CreateTutorialCategoryDto } from './dto';
 import { CreateTutorialDto } from './dto/create-tutorial.dto';
 import { UpdateTutorialDto } from './dto/update-tutorial.dto';
 import { Tutorial, TutorialCategory } from './entities';
-
 @Injectable()
 export class TutorialService {
   constructor(
@@ -25,11 +26,20 @@ export class TutorialService {
     return await this.tutorialRepo.save(newTutorial);
   }
 
-  async findAll(category?: string): Promise<Tutorial[]> {
-    let tutorials: Tutorial[];
-    if (!category) tutorials = await this.tutorialRepo.find();
-    else tutorials = await this.tutorialRepo.find({ where: { category } });
-    return tutorials;
+  async findAll(
+    options: IPaginationOptions<any>,
+    categoryId?: string,
+  ): Promise<PaginatedData<Tutorial>> {
+    let result: PaginatedData<Tutorial>;
+    if (!categoryId)
+      result = await paginate<Tutorial>(this.tutorialRepo, options);
+    else {
+      const category = await this.findTutorialCategory(categoryId);
+      result = await paginate<Tutorial>(this.tutorialRepo, options, {
+        where: { category },
+      });
+    }
+    return result;
   }
 
   async searchTutorials(keyword: string): Promise<Tutorial[]> {
@@ -81,8 +91,10 @@ export class TutorialService {
     await this.categoryRepo.delete(id);
     return;
   }
-  async findAllCategories(): Promise<TutorialCategory[]> {
-    return await this.categoryRepo.find();
+  async findAllCategories(
+    options: IPaginationOptions<any>,
+  ): Promise<PaginatedData<TutorialCategory>> {
+    return await paginate<TutorialCategory>(this.categoryRepo, options);
   }
   async createCategory(
     createTutorialCategoryDto: CreateTutorialCategoryDto,

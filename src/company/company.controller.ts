@@ -7,15 +7,20 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { GenericResponse } from '../_shared_/interfaces';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  GenericPaginatedResponse,
+  GenericResponse,
+} from '../_shared_/interfaces';
+import { PaginatedData } from '../_shared_/interfaces/paginated-data';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company } from './entities/company.entity';
 
-@Controller('companies')
+@Controller('v1/companies')
 @ApiTags('Companies')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
@@ -32,8 +37,16 @@ export class CompanyController {
   }
 
   @Get()
-  async findAll(): Promise<GenericResponse<Company[]>> {
-    const data = await this.companyService.findAll();
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  async findAll(
+    @Query('page') page?: string,
+    @Query('limit') limit?: number,
+  ): Promise<GenericPaginatedResponse<Company>> {
+    const data = await this.companyService.findAll({
+      limit: limit || 6,
+      page: page || 1,
+    });
     return {
       message: 'Companies retrieved',
       data,

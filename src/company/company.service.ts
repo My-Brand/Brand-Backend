@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
+import { PaginatedData } from '../_shared_/interfaces/paginated-data';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company } from './entities/company.entity';
@@ -24,8 +26,10 @@ export class CompanyService {
     return await this.companyRepo.save(newCompany);
   }
 
-  async findAll(): Promise<Company[]> {
-    return await this.companyRepo.find();
+  async findAll(
+    options: IPaginationOptions<any>,
+  ): Promise<PaginatedData<Company>> {
+    return await paginate<Company>(this.companyRepo, options);
   }
 
   async findOne(id: string): Promise<Company> {
