@@ -8,14 +8,14 @@ export class CreateSkillDto {
 
   @ApiProperty()
   @IsString()
-  category: string;
-
-  @ApiProperty()
-  @IsString()
-  picture: string;
+  avatar: string;
 
   @ApiProperty()
   @IsNumber()
   @Max(5)
   level: number;
+
+  @ApiProperty()
+  @IsString()
+  categoryId: string;
 }

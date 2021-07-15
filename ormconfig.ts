@@ -9,16 +9,15 @@ const ormconfig: TypeOrmModuleOptions = {
     __dirname + '/src/**/*.entity.js',
     __dirname + '/src/**/*.entity.ts',
   ],
-  synchronize: db.noSync ? false : true,
+  synchronize: db.sync,
   migrations: ['dist/src/db/migrations/*.js'],
   cli: {
     migrationsDir: 'src/db/migrations',
   },
-  ssl:
-    db.ssl === 'true'
-      ? {
-          rejectUnauthorized: false,
-        }
-      : false,
+  ssl: db.ssl
+    ? {
+        rejectUnauthorized: false,
+      }
+    : false,
 };
 export default ormconfig;

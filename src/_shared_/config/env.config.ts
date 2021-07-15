@@ -12,7 +12,7 @@ const {
   JWT_SECRET,
   JWT_EXPIRES_IN,
   DATABASE_SSL,
-  DB_NO_SYNC,
+  DB_SYNC,
 } = process.env;
 
 export const global = {
@@ -25,8 +25,8 @@ export const db = {
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   host: POSTGRES_HOST || 'localhost',
-  ssl: DATABASE_SSL,
-  noSync: DB_NO_SYNC,
+  ssl: DATABASE_SSL === 'true',
+  sync: DB_SYNC === 'true',
 };
 
 export const jwt = {
