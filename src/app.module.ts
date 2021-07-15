@@ -9,9 +9,17 @@ import { ResponseInterceptor } from './_shared_/interceptors/response.intercepto
 import { LoggerInterceptor } from './_shared_/interceptors/logger.interceptor';
 import { SkillModule } from './skill/skill.module';
 import { CompanyModule } from './company/company.module';
+import { ProjectModule } from './project/project.module';
+import { TutorialModule } from './tutorial/tutorial.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormconfig), SkillModule, CompanyModule],
+  imports: [
+    TypeOrmModule.forRoot(ormconfig),
+    SkillModule,
+    CompanyModule,
+    ProjectModule,
+    TutorialModule,
+  ],
   controllers: [AppController],
   providers: [
     Logger,

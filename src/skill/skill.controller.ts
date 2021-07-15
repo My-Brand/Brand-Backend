@@ -33,11 +33,23 @@ export class SkillController {
   }
 
   @Get()
-  @ApiQuery({ name: 'category', required: false })
+  @ApiQuery({ name: 'category_id', required: false })
   async findAll(
-    @Query('category') category?: string,
+    @Query('category_id') categoryId?: string,
   ): Promise<GenericResponse<Skill[]>> {
-    const data = await this.skillService.findAll(category);
+    const data = await this.skillService.findAll(categoryId);
+    return {
+      message: 'Skills retrieved',
+      data,
+    };
+  }
+
+  @Get('search')
+  @ApiQuery({ name: 'q', required: true })
+  async searchTutorials(
+    @Query('q') keyword?: string,
+  ): Promise<GenericResponse<Skill[]>> {
+    const data = await this.skillService.searchSkills(keyword);
     return {
       message: 'Skills retrieved',
       data,

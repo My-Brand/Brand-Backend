@@ -1,18 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Project } from '../../project/entities/project.entity';
+import { Audit } from '../../_shared_/interfaces';
 import { EmploymentType } from '../enums';
 
 @Entity()
-export class Company {
-  @PrimaryGeneratedColumn()
-  @ApiProperty()
-  id: string;
-
+export class Company extends Audit {
   @Column()
   @ApiProperty()
   companyName: string;
@@ -41,6 +34,7 @@ export class Company {
   @ApiProperty()
   employmentType: EmploymentType;
 
-  @CreateDateColumn()
-  dateCreated: Date;
+  @OneToMany(() => Project, (project) => project.company)
+  @ApiProperty()
+  projects: Project[];
 }

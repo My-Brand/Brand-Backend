@@ -1,34 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Audit } from '../../_shared_/interfaces';
+import { SkillCategory } from './skill-category.entity';
 
 @Entity()
-export class Skill {
-  @PrimaryGeneratedColumn()
-  @ApiProperty()
-  id: string;
-
+export class Skill extends Audit {
   @Column()
   @ApiProperty()
   name: string;
 
-  @Column()
+  @ManyToOne(() => SkillCategory, (skillCategory) => skillCategory.skills)
   @ApiProperty()
-  category: string;
+  category: SkillCategory;
 
   @Column()
   @ApiProperty()
-  picture: string;
+  avatar: string;
 
   @Column({ type: 'decimal' })
   @ApiProperty()
   level: number;
-
-  @CreateDateColumn()
-  @ApiProperty()
-  dateCreated: Date;
 }

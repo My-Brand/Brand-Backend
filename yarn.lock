@@ -581,7 +581,7 @@
     semver "^7.3.4"
     tar "^6.1.0"
 
-"@nestjs/cli@^7.5.6":
+"@nestjs/cli@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-7.6.0.tgz#661f99b578284f9124307a8077f004a091b25e77"
   integrity sha512-lW1px2gSHkRoBpKSxzP6IJNQscRKs97OAaVyV46OAP6oUR996E0EPkIslIaa16kKLJ3SFOUeZo5xl5nYbqp43g==
