@@ -37,6 +37,7 @@ export class ProjectService {
       const company = await this.findCompany(companyId);
       result = await paginate<Project>(this.projectRepo, options, {
         where: { company },
+        order: { createdOn: 'DESC' },
       });
     }
     return result;
@@ -52,11 +53,6 @@ export class ProjectService {
     updateProjectDto: UpdateProjectDto,
   ): Promise<Project> {
     let project = await this.findOne(id);
-    if (updateProjectDto.companyId) {
-      const company = await this.findCompany(updateProjectDto.companyId);
-      project.company = company;
-      delete updateProjectDto.companyId;
-    }
     project = { ...project, ...updateProjectDto };
     await this.projectRepo.save(project);
     return project;

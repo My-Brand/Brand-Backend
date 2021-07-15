@@ -22,7 +22,9 @@ export class InterestService {
   async findAll(
     options: IPaginationOptions<any>,
   ): Promise<PaginatedData<Interest>> {
-    return await paginate<Interest>(this.interestRepo, options);
+    return await paginate<Interest>(this.interestRepo, options, {
+      order: { title: 'ASC' },
+    });
   }
 
   async findOne(id: string): Promise<Interest> {

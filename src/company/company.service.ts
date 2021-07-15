@@ -29,7 +29,9 @@ export class CompanyService {
   async findAll(
     options: IPaginationOptions<any>,
   ): Promise<PaginatedData<Company>> {
-    return await paginate<Company>(this.companyRepo, options);
+    return await paginate<Company>(this.companyRepo, options, {
+      order: { createdOn: 'DESC' },
+    });
   }
 
   async findOne(id: string): Promise<Company> {
