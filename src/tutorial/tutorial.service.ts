@@ -32,11 +32,14 @@ export class TutorialService {
   ): Promise<PaginatedData<Tutorial>> {
     let result: PaginatedData<Tutorial>;
     if (!categoryId)
-      result = await paginate<Tutorial>(this.tutorialRepo, options);
+      result = await paginate<Tutorial>(this.tutorialRepo, options, {
+        order: { createdOn: 'DESC' },
+      });
     else {
       const category = await this.findTutorialCategory(categoryId);
       result = await paginate<Tutorial>(this.tutorialRepo, options, {
         where: { category },
+        order: { createdOn: 'DESC' },
       });
     }
     return result;

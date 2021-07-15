@@ -36,7 +36,10 @@ export class SkillService {
   }
 
   async searchSkills(keyword: string): Promise<Skill[]> {
-    return await this.skillRepo.find({ name: ILike(`%${keyword}%`) });
+    return await this.skillRepo.find({
+      where: { name: ILike(`%${keyword}%`) },
+      order: { createdOn: 'DESC' },
+    });
   }
 
   async searchCategories(keyword: string): Promise<SkillCategory[]> {
@@ -51,13 +54,6 @@ export class SkillService {
 
   async update(id: string, updateSkillDto: UpdateSkillDto): Promise<Skill> {
     let skill = await this.findOne(id);
-    if (updateSkillDto.categoryId) {
-      const category = await this.categoryRepo.findOne(
-        updateSkillDto.categoryId,
-      );
-      skill.category = category;
-      delete updateSkillDto.categoryId;
-    }
     skill = { ...skill, ...updateSkillDto };
     await this.skillRepo.save(skill);
     return skill;
