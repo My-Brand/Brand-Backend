@@ -1,8 +1,8 @@
-# issa-portfolio-api
+# Brand Backend
 
 ## Description
 
-Issa Jean Marie's portfolio
+Portfolio api
 
 ## Installation
 
