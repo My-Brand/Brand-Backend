@@ -28,16 +28,16 @@ jobs:
   Test:
     runs-on: ubuntu-latest
 
-    services:
-      database:
-        image: postgres:alpine
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   database:
+    #     image: postgres:alpine
+    #     env:
+    #       POSTGRES_PASSWORD: postgres
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     strategy:
       matrix:
@@ -55,11 +55,11 @@ jobs:
       - name: Install
         run: yarn
 
-      - name: Connect to the database
-        run: node client.js
-        env:
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: 5432
+      # - name: Connect to the database
+      #   run: node client.js
+      #   env:
+      #     POSTGRES_HOST: postgres
+      #     POSTGRES_PORT: 5432
 
       - name: Test
         run: yarn test
