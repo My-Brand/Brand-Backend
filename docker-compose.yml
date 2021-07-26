@@ -14,12 +14,12 @@ services:
 
   api:
     env_file: .env
-    image: issa_portfolio:latest
+    image: mybrand/api:latest
     container_name: issa_portfolio_api
     environment:
       POSTGRES_HOST: db
     volumes:
-      - ./:/app
+      - ./:/usr/src/app
     depends_on:
       - db
     networks:

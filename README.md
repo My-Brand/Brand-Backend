@@ -23,6 +23,20 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Running the app in docker (You need docker and docker-compose(for linux) installed for this.)
+
+```bash
+
+# For linux systems, make sure that docker is allowed to run as non-root.
+# Learn more: https://docs.docker.com/engine/install/linux-postinstall/
+
+# allow execution of docker.sh
+$ chmod a+rx docker.sh
+
+# run the docker shell script
+$ ./docker.sh
+```
+
 ## Test
 
 ```bash
