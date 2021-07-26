@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## On linux First allow execution of this file as a program by running 'chmod a+rx docker.sh'
 ## Then run this file by running ./docker.sh 
