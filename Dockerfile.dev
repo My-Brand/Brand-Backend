@@ -4,14 +4,16 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 
+WORKDIR /usr/src/app
+
 RUN yarn global add @nestjs/cli@7.6.0
 
-RUN yarn install
+COPY package.json yarn.lock ./
+
+RUN yarn
 
 COPY . .
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
-RUN cd app/ && yarn build
-
-CMD node dist/src/main
+CMD yarn start:dev
