@@ -31,7 +31,7 @@ $ yarn run start:prod
 # Learn more: https://docs.docker.com/engine/install/linux-postinstall/
 
 # allow execution of docker.sh
-$ chmod a+rx docker.sh
+$ chmod +x docker.sh
 
 # run the docker shell script
 $ ./docker.sh
